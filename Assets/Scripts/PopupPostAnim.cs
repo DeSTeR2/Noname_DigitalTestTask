@@ -10,7 +10,8 @@ public class PopupPostAnim : MonoBehaviour
     bool status = false; // false - if small, true - if big
 
     private Transform transform;
-    Vector3 acnhorPosition, sizeDelta;
+    private Vector3 acnhorPosition, sizeDelta;
+    private Vector3 acnhorPosMov = new Vector3(1.15f, -214f, 5f);
 
     RectTransform rectTransform;
     void Start()
@@ -22,9 +23,9 @@ public class PopupPostAnim : MonoBehaviour
     // Animation to make post bigger
     public void Animate() {
         if (status == false) {
-            rectTransform.DOAnchorPos(new Vector3(1.15f, -214f, 5f), scaleDuration);
+            rectTransform.DOAnchorPos(acnhorPosMov, scaleDuration);
             rectTransform.DOSizeDelta(new Vector2(rectTransform.sizeDelta.x, 1300), scaleDuration);
-            
+
             acnhorPosition = rectTransform.anchoredPosition;
             sizeDelta = rectTransform.sizeDelta;
         }
@@ -34,10 +35,15 @@ public class PopupPostAnim : MonoBehaviour
 
     // Animation to make post default size and pos
     public void GoBackAnimation() {
-        rectTransform.DOAnchorPos(acnhorPosition, scaleDuration);
-        rectTransform.DOSizeDelta(sizeDelta, scaleDuration);
+        if (status == true) {
+            rectTransform.DOAnchorPos(acnhorPosition, scaleDuration);
+            rectTransform.DOSizeDelta(sizeDelta, scaleDuration);
 
-        status = false;
+            acnhorPosition = rectTransform.anchoredPosition;
+            sizeDelta = rectTransform.sizeDelta;
+
+            status = false;
+        }
     }
 
     public bool GetStatus() {

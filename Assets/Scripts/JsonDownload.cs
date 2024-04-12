@@ -33,10 +33,6 @@ public class JsonDownload : MonoBehaviour
     private void Start() {
         // Initiate DropboxHelperBehaviour
         Init(); 
-        
-        //UNCOMMENT THIS
-        //Debug.LogError("DONT FORGET TO UNCOMMENT INIT()");
-        //DropboxHelperBehaviour.Done = true; // delete this
     }
 
     private void Update() {
@@ -61,6 +57,7 @@ public class JsonDownload : MonoBehaviour
 
     private void Init() {
        DropboxHelperBehaviour.InitDropBox();
+
     }
 
     // Get all info from mods.json
@@ -80,9 +77,13 @@ public class JsonDownload : MonoBehaviour
             string description = mods[i].description;
 
             // Create Textrure2D from .png
-            var rawData = System.IO.File.ReadAllBytes(Application.persistentDataPath + imgPath);
-            Texture2D imgTexture = new Texture2D(2, 2); ;
-            imgTexture.LoadImage(rawData);
+            string fullPath = Application.persistentDataPath + imgPath;
+            Texture2D imgTexture = new Texture2D(2, 2)
+
+            if (File.Exists(fullPath)) {
+                var rawData = System.IO.File.ReadAllBytes(fullPath);
+                imgTexture.LoadImage(rawData);
+            }
 
             imgPath = imgPath.Remove(0, 1);
             // Create new post

@@ -19,7 +19,7 @@ public class OperateWithBigAndSmallPost : MonoBehaviour
     void Update()
     {
         // If status was changed and this status == true
-        if (popAnim.GetStatus() != status && status == false) {
+        if (popAnim.GetStatus() != status && popAnim.GetStatus() == true) {
             parent.GetComponent<PopUPParentPost>().PopUp(this.gameObject);
         } 
         status = popAnim.GetStatus();

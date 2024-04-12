@@ -1,14 +1,14 @@
-using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using DG.Tweening;
 
-public class PostDownloadImg : MonoBehaviour
+
+public class LoadingPost : MonoBehaviour
 {
-    bool animate = false;
-    bool canDownload = false;
+    bool animate = true;
     float timer = 0;
-    string imgPath;
-    
 
     [SerializeField]
     float timeForNewText;
@@ -19,22 +19,19 @@ public class PostDownloadImg : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI text;
 
-    GeneralSharing share;
+    [SerializeField]
+    GameObject Downloading;
+
     private void Start() {
         UpdateAnimation();
     }
 
-    
-    void Update()
-    {
+
+    void Update() {
         if (!animate) return;
 
-        if (Plugins.Dropbox.DropboxHelperBehaviour.GetDownloadStatus() == true) {
-            StopAnimate();
-        }
-
         // Rotate image 
-        Vector3 vector3 = new Vector3(0,0,360f);
+        Vector3 vector3 = new Vector3(0, 0, 360f);
         if (image != null)
             image?.gameObject?.transform?.DORotate(vector3, 5f, RotateMode.FastBeyond360)
                 .SetLoops(-1, LoopType.Restart)
@@ -43,11 +40,11 @@ public class PostDownloadImg : MonoBehaviour
 
         // Create "writting" effect 
         timer += Time.deltaTime;
-        if (timer >  timeForNewText) {
+        if (timer > timeForNewText) {
             timer = 0;
             string sText = text.text;
             int dots = 0;
-            for (int i=sText.Length-1; i>=0;i--) {
+            for (int i = sText.Length - 1; i >= 0; i--) {
                 if (sText[i] == '.') {
                     dots++;
                 } else break;
@@ -62,7 +59,7 @@ public class PostDownloadImg : MonoBehaviour
             text.text = sText;
         }
     }
-    
+
     // Change download animations according to status "Download"\"No download"
     private void UpdateAnimation() {
         for (int i = 0; i < gameObject.transform.childCount; i++) {
@@ -70,32 +67,12 @@ public class PostDownloadImg : MonoBehaviour
         }
     }
 
-    // Set UnityNativeShare
-    public void SetShare(GeneralSharing share) {
-        this.share = share;
-    }
-
-    // Start download animation
-    public void Animate() {
-        if (gameObject.activeInHierarchy == true && canDownload == true) {
-            animate = true;
-            UpdateAnimation();
-            Plugins.Dropbox.DropboxHelperBehaviour.Download(imgPath);
-        }
-    }
-
     // Stop download animation
     public void StopAnimate() {
+        Downloading.transform?.GetComponent<PostDownloadImg>().CanDownload();
         animate = false;
-        share.SharePhoto(imgPath);
         UpdateAnimation();
     }
 
-    public void SetImgPath(string path) {
-        this.imgPath = path;
-    }
-
-    public void CanDownload() {
-        canDownload = true;
-    }
+    public bool IsAnimating { get { return animate; } }
 }

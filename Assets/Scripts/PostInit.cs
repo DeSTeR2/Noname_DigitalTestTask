@@ -24,6 +24,9 @@ public class PostInit : MonoBehaviour {
     [SerializeField]
     PostDownloadImg sPostDownload;
 
+    [SerializeField]
+    LoadingPost sLoadinPost;
+
     private Texture2D inputImg;
     private string inputTitle;
     private string inputDescription;
@@ -52,6 +55,13 @@ public class PostInit : MonoBehaviour {
 
         sPostDownload.SetImgPath(imgPath);
         sPostDownload.SetShare(shareCode);
+
+        // The image has been loaded 
+        // Stop loading animation
+        // and allow downloading
+        if (inputImg.width != 2)  {
+            sLoadinPost.StopAnimate();
+        }
     }
 
     // Returns true if this.category == category, else - no 

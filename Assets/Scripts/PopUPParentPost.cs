@@ -30,5 +30,6 @@ public class PopUPParentPost : MonoBehaviour
         transform.GetComponent<PostHandler>().DisplayWholeCategory();
         if (popedUp != null) 
             popedUp.GetComponent<OperateWithBigAndSmallPost>().ClosePopUp();
+        popedUp = null;
     }
 }
