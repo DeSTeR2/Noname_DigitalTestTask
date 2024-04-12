@@ -60,14 +60,14 @@ public class LoadingPost : MonoBehaviour
         }
     }
 
-    // Change download animations according to status "Download"\"No download"
+    // Change loading animations according to status "Loading"\"No Loading"
     private void UpdateAnimation() {
         for (int i = 0; i < gameObject.transform.childCount; i++) {
             gameObject.transform.GetChild(i).gameObject.SetActive(animate);
         }
     }
 
-    // Stop download animation
+    // Stop loading animation
     public void StopAnimate() {
         Downloading.transform?.GetComponent<PostDownloadImg>().CanDownload();
         animate = false;
